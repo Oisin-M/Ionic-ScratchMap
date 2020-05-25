@@ -7,6 +7,7 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldHigh from "@amcharts/amcharts4-geodata/worldHigh";
 import am4themes_moonrisekingdom from "@amcharts/amcharts4/themes/moonrisekingdom";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import { indexOf } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 am4core.useTheme(am4themes_moonrisekingdom);
 am4core.useTheme(am4themes_animated);
@@ -104,11 +105,9 @@ class Chart extends Component {
       unvisited_countries.push({
         "id": init_data.features[i].id,
         "title": init_data.features[i].properties.name,
-        "visited" : "unvisited",
+        "visited" : "Unvisited",
       });
     }
-
-    console.log(unvisited_countries);
 
 
       var groupData = [
@@ -133,7 +132,7 @@ class Chart extends Component {
         var includedCountries: string[] = [];
         group.data.forEach(function(country) {
           includedCountries.push(country.id);
-          excludedCountries.push(country.id);
+          // excludedCountries.push(country.id);
         });
         series.include = includedCountries;
 
@@ -170,16 +169,50 @@ class Chart extends Component {
         })
 
         mapPolygonTemplate.events.on("hit", function(event) {
-          console.log("click");
-          console.log(event.target.dataItem.dataContext);
+          var clicked_object : LooseObject = event.target.dataItem.dataContext
+          console.log("clicked", clicked_object);
+          console.log(clicked_object.visited);
+          // console.log(event.target);
+          // console.log("clicked_obj",clicked_object);
+          pointClick(clicked_object.id, clicked_object.name, clicked_object.visited)
+          // console.log(event.target.parent);
+          // console.log(chart.series.values)
+          console.log(chart.series);
+          console.log(event.target);
         })
+
+        function pointClick(id: string, name: string, visited: string) {
+          if (visited=="Visited") {
+            var ser = chart.series.values[1];
+            var ser2 = chart.series.values[0];
+          }
+          else {
+            var ser = chart.series.values[0];
+            var ser2 = chart.series.values[1];
+          }
+          console.log("series", ser);
+          var index= findIndex(ser.data, id);
+          console.log(index);
+
+          var value = ser.data.splice(index, 1)[0];
+          ser2.data.push(value);
+        };
+
+        function findIndex(series: Array<any>, id: any) {
+          const search_func = (element: any) => element.id == id;
+
+          return series.findIndex(search_func);
+        }
 
         // States
         var hoverState = mapPolygonTemplate.states.create("hover");
         hoverState.properties.fill = am4core.color("#CC0000");
 
+        let activeState = mapPolygonTemplate.states.create("active");
+        activeState.properties.fill = chart.colors.getIndex(4);
+
         // Tooltip
-        mapPolygonTemplate.tooltipText = "{title} joined EU at {customData}"; // enables tooltip
+        mapPolygonTemplate.tooltipText = "{title} ({id}): {visited}"; // enables tooltip
         // series.tooltip.getFillFromObject = false; // prevents default colorization, which would make all tooltips red on hover
         // series.tooltip.background.fill = am4core.color(group.color);
 
@@ -188,6 +221,8 @@ class Chart extends Component {
         // (This method of copying works only for simple objects, e.g. it will not work
         //  as predictably for deep copying custom Classes.)
         series.data = JSON.parse(JSON.stringify(group.data));
+
+        console.log(chart);
       });
 
       
@@ -206,16 +241,16 @@ class Chart extends Component {
       // Legend items
        chart.legend.itemContainers.template.interactionsEnabled = true;
 
-      console.log(chart);
+      // console.log(chart);
 
-      for (var i=0; i < chart.series.length ; i++) {
+      // for (var i=0; i < chart.series.length ; i++) {
 
-        console.log("Series ",chart.series.values[i].name);
+      //   console.log("Series ",chart.series.values[i].name);
 
-        for (var j=0; j<chart.series.values[i].data.length; j++) {
-          console.log(chart.series.values[i].data[j]);
-        }
-      }
+      //   for (var j=0; j<chart.series.values[i].data.length; j++) {
+      //     console.log(chart.series.values[i].data[j]);
+      //   }
+      // }
 }
 
   componentWillUnmount() {
