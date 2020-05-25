@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './Chart.css';
 import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts"; //think can remove
+// import * as am4charts from "@amcharts/amcharts4/charts"; //think can remove
 import * as am4maps from "@amcharts/amcharts4/maps";
 // import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 import am4geodata_worldHigh from "@amcharts/amcharts4-geodata/worldHigh";
 import am4themes_moonrisekingdom from "@amcharts/amcharts4/themes/moonrisekingdom";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { indexOf } from '@amcharts/amcharts4/.internal/core/utils/Array';
+// import { indexOf } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
 am4core.useTheme(am4themes_moonrisekingdom);
 am4core.useTheme(am4themes_animated);
