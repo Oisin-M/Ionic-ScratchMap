@@ -27,6 +27,7 @@
     "typescript": "3.8.3"
   },
   "scripts": {
+    "clean": "gh-pages-clean",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
