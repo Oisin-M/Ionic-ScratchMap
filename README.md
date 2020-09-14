@@ -1,5 +1,7 @@
 # Ionic-Amcharts-Scratch-Map
 
+### This project is live [here](https://oisin-m.github.io/Ionic-Amcharts-Scratch-Map/)
+
 This is a project using Ionic, React and Amcharts to make a simple scratchmap. It looks as follows:
 <img src="https://i.imgur.com/yrgH1pg.png">
 
